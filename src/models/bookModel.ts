@@ -1,6 +1,9 @@
 // @ts-ignore
 import client from '../database'
-
+import bcrypt, { hash } from 'bcrypt'
+import dotenv from 'dotenv'
+dotenv.config()
+const {BCRYPT_PASSWORD,SALT_ROUNDS}= process.env
 export type Book = {
      id: number;
      title: string;
@@ -47,7 +50,7 @@ export class BookStore {
     const sql = 'INSERT INTO books (title, author, total_pages, summary) VALUES($1, $2, $3, $4) RETURNING *'
     // @ts-ignore
     const conn = await client.connect()
-
+    
     const result = await conn
         .query(sql, [b.title, b.author, b.total_pages, b.summary])
 

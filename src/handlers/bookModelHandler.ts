@@ -1,5 +1,6 @@
 import {Request,Response,Application} from 'express'
 import {Book,BookStore} from '../models/bookModel'
+import authorize from '../middleware/authorization'
 const store=new BookStore()
 
 const index =async (_req: Request,res:Response)=>{
@@ -37,8 +38,8 @@ const remove =async (_req: Request,res:Response,id:number)=>{
 const bookstoreRouteHandler =async (app:Application)=>{
   app.get('/books',index)
   app.get('/books/:id',index)
-  app.delete('/books/id',index)
-  app.post('/books',index)
+  app.delete('/books/id',authorize,index)
+  app.post('/books',authorize,index)
 }
 
 export default bookstoreRouteHandler
